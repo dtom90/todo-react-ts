@@ -1,25 +1,14 @@
 import React from 'react';
+import TaskForm from './components/TaskForm';
 import './App.css';
+import { Task } from './types';
 
 function App() {
 
-  const [newTaskText, setNewTaskText] = React.useState('');
-  const [tasks, setTasks] = React.useState<{ id: number; text: string; completed: boolean; }[]>([]);
-  const [hasError, setHasError] = React.useState(false);
+  const [tasks, setTasks] = React.useState<Task[]>([]);
 
-  const handleAddTask = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newTaskText.trim() === '') {
-      setHasError(true);
-      return;
-    }
-    const newTask = {
-      id: Date.now(),
-      text: newTaskText,
-      completed: false,
-    };
+  const handleTaskAdded = (newTask: Task) => {
     setTasks([...tasks, newTask]);
-    setNewTaskText('');
   };
 
   return (
@@ -34,19 +23,9 @@ function App() {
           <div>
             <h2>My Tasks</h2>
           </div>
-          <form onSubmit={handleAddTask}>
-            <input 
-              type="text" 
-              placeholder="Add a task" 
-              value={newTaskText} 
-              onChange={(e) => {
-                setNewTaskText(e.target.value);
-                setHasError(false);
-              }} 
-              className={`add-task-input ${hasError ? 'error' : ''}`}
-            />
-            <button className="add-task-btn" type="submit">Add Task</button>
-          </form>
+          <TaskForm 
+            onTaskAdded={handleTaskAdded}
+          />
 
           <div className="todo-list">
             {tasks.map((task) => (
