@@ -1,15 +1,12 @@
-import React from 'react';
-import { Task } from '../types';
+import { FormEvent, ChangeEvent, useState } from 'react';
+import { useTasks } from '../contexts/TaskContext';
 
-interface TaskFormProps {
-  onTaskAdded: (newTask: Task) => void;
-}
+export default function TaskForm() {
+  const { addTask } = useTasks();
+  const [taskText, setTaskText] = useState('');
+  const [hasError, setHasError] = useState(false);
 
-export default function TaskForm({ onTaskAdded }: TaskFormProps) {
-  const [taskText, setTaskText] = React.useState('');
-  const [hasError, setHasError] = React.useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (taskText.trim() === '') {
       setHasError(true);
@@ -20,12 +17,12 @@ export default function TaskForm({ onTaskAdded }: TaskFormProps) {
       text: taskText,
       completed: false,
     };
-    onTaskAdded(newTask);
+    addTask(newTask);
     setTaskText('');
     setHasError(false);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTaskText(e.target.value);
     setHasError(false);
   };
