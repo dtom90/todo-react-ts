@@ -63,6 +63,20 @@
   font-size: 1rem;
 }
 
+.add-task-input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 10px;
+  width: 200px;
+  transition: border-color 0.2s ease;
+}
+
+.add-task-input.error {
+  border-color: #ff4444;
+  box-shadow: 0 0 0 2px rgba(255, 68, 68, 0.1);
+}
+
 .todo-list {
   min-height: 300px;
 }
