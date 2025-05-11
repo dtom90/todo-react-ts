@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <div className="header-content">
-          <h1>Todo List</h1>
+          <h1 className="text-3xl font-bold mb-6">Todo List</h1>
         </div>
       </header>
       <main className="main-content">
