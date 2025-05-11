@@ -28,8 +28,8 @@ export default function TaskForm() {
   };
 
   return (
-    <div className="w-100 d-flex justify-content-center">
-      <form onSubmit={handleSubmit} className="todo-form">
+    <div>
+      <form onSubmit={handleSubmit} className="flex w-full">
         <input 
           type="text" 
           placeholder="Add a task" 
