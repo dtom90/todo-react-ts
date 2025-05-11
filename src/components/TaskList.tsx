@@ -1,8 +1,8 @@
-import { useTasks } from "../contexts/TaskContext";
+import { useStore } from "../contexts/StoreProvider";
 import { Task } from "../types";
 
 export default function TaskList() {
-    const { incompleteTasks, toggleTask, removeTask, completedTasks } = useTasks();
+    const { incompleteTasks, toggleTask, removeTask, completedTasks } = useStore();
 
     function TaskItem({ task }: { task: Task }) {
       return (

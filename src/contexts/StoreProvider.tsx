@@ -11,7 +11,7 @@ interface TaskContextType {
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
-export function TaskProvider({ children }: { children: React.ReactNode }) {
+export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const addTask = useCallback((task: Omit<Task, 'id'>) => {
@@ -39,10 +39,10 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useTasks() {
+export function useStore() {
   const context = useContext(TaskContext);
   if (context === undefined) {
-    throw new Error('useTasks must be used within a TaskProvider');
+    throw new Error('useStore must be used within a StoreProvider');
   }
   return context;
 }

@@ -1,5 +1,5 @@
 import './App.css';
-import { TaskProvider } from './contexts/TaskContext';
+import { StoreProvider } from './contexts/StoreProvider';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 
@@ -14,9 +14,10 @@ function App() {
       </header>
       <main className="main-content">
         <div className="todo-container">
-          <TaskForm />
-
-          <TaskList />
+          <div className="todo-wrapper">
+            <TaskForm />
+            <TaskList />
+          </div>
         </div>
       </main>
     </div>
@@ -25,8 +26,8 @@ function App() {
 
 export default function AppWithProvider() {
   return (
-    <TaskProvider>
+    <StoreProvider>
       <App />
-    </TaskProvider>
+    </StoreProvider>
   );
 }

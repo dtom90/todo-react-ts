@@ -1,8 +1,8 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
-import { useTasks } from '../contexts/TaskContext';
+import { useStore } from '../contexts/StoreProvider';
 
 export default function TaskForm() {
-  const { addTask } = useTasks();
+  const { addTask } = useStore();
   const [taskText, setTaskText] = useState('');
   const [hasError, setHasError] = useState(false);
 
@@ -28,15 +28,17 @@ export default function TaskForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input 
-        type="text" 
-        placeholder="Add a task" 
-        value={taskText} 
-        onChange={handleChange} 
-        className={`add-task-input ${hasError ? 'error' : ''}`}
-      />
-      <button className="add-task-btn" type="submit">Add Task</button>
-    </form>
+    <div className="w-100 d-flex justify-content-center">
+      <form onSubmit={handleSubmit} className="todo-form">
+        <input 
+          type="text" 
+          placeholder="Add a task" 
+          value={taskText} 
+          onChange={handleChange} 
+          className={`add-task-input ${hasError ? 'error' : ''}`}
+        />
+        <button className="add-task-btn" type="submit">Add Task</button>
+      </form>
+    </div>
   );
 }
