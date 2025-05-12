@@ -1,8 +1,8 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
-import { useStore } from '../contexts/StoreProvider';
+import { useTaskStore } from '../store/useTaskStore';
 
 export default function TaskForm() {
-  const { addTask } = useStore();
+  const addTask = useTaskStore((state) => state.addTask);
   const [taskText, setTaskText] = useState('');
   const [hasError, setHasError] = useState(false);
 

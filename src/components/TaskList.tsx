@@ -1,8 +1,15 @@
-import { useStore } from "../contexts/StoreProvider";
+import { useTaskStore } from "../store/useTaskStore";
 import { Task } from "../types";
+import { useMemo } from 'react';
 
 export default function TaskList() {
-    const { incompleteTasks, toggleTask, removeTask, completedTasks } = useStore();
+    const { tasks, toggleTask, removeTask } = useTaskStore();
+    
+    const { incompleteTasks, completedTasks } = useMemo(() => {
+      const incomplete = tasks.filter((task: Task) => !task.completed);
+      const completed = tasks.filter((task: Task) => task.completed);
+      return { incompleteTasks: incomplete, completedTasks: completed };
+    }, [tasks]);
 
     function TaskItem({ task }: { task: Task }) {
       return (

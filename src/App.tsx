@@ -1,10 +1,8 @@
-import { StoreProvider } from './contexts/StoreProvider';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import './App.css';
 
 function App() {
-
   return (
     <div className="App">
       <header className="App-header">
@@ -24,10 +22,4 @@ function App() {
   );
 }
 
-export default function AppWithProvider() {
-  return (
-    <StoreProvider>
-      <App />
-    </StoreProvider>
-  );
-}
+export default App;
