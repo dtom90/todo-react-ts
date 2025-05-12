@@ -1,29 +1,16 @@
 import { useTaskStore } from "../store/useTaskStore";
 import { Task } from "../types";
 import { useMemo } from 'react';
+import TaskItem from "./TaskItem";
 
 export default function TaskList() {
-    const { tasks, toggleTask, removeTask } = useTaskStore();
+    const { tasks } = useTaskStore();
     
     const { incompleteTasks, completedTasks } = useMemo(() => {
       const incomplete = tasks.filter((task: Task) => !task.completed);
       const completed = tasks.filter((task: Task) => task.completed);
       return { incompleteTasks: incomplete, completedTasks: completed };
     }, [tasks]);
-
-    function TaskItem({ task }: { task: Task }) {
-      return (
-        <div key={task.id} className="flex items-center py-2 px-4 border border-gray-200 rounded-lg mb-2">
-          <input 
-            type="checkbox" 
-            checked={task.completed} 
-            onChange={() => toggleTask(task.id)}
-          />
-          <span className="ml-4 flex-grow">{task.text}</span>
-          <button className="hover:bg-gray-200 p-1 rounded-lg" onClick={() => removeTask(task.id)}>Remove</button>
-        </div>
-      );
-    }
 
     return (
       <div className="todo-list">
