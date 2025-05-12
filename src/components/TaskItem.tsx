@@ -1,12 +1,17 @@
-import { Task } from "../types";
 import { useTaskStore } from "../store/useTaskStore";
 
 
-export default function TaskItem({ task }: { task: Task }) {
-  const { toggleTask, removeTask } = useTaskStore();
+const TaskItem: React.FC<{ taskId: number }> = ({ taskId }) => {
+  // Enable whyDidYouRender for this component
+  TaskItem.whyDidYouRender = true;
+
+  const { toggleTask, removeTask } = useTaskStore()
+  const task = useTaskStore((state) => state.taskMap.get(taskId))
+
+  if (!task) return null;
 
   return (
-    <div key={task.id} className="flex items-center py-2 px-4 border border-gray-200 rounded-lg mb-2">
+    <div key={taskId} className="flex items-center py-2 px-4 border border-gray-200 rounded-lg mb-2">
       <input 
         type="checkbox" 
         checked={task.completed} 
@@ -17,3 +22,5 @@ export default function TaskItem({ task }: { task: Task }) {
     </div>
   );
 }
+
+export default TaskItem

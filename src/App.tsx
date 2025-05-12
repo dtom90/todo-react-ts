@@ -1,5 +1,5 @@
 import TaskForm from './components/TaskForm';
-import TaskList from './components/TaskList';
+import { IncompleteTaskList, CompletedTaskList } from './components/TaskList';
 import './App.css';
 
 function App() {
@@ -14,7 +14,10 @@ function App() {
         <div className="todo-container">
           <div className="todo-wrapper">
             <TaskForm />
-            <TaskList />
+            <div className="todo-list">
+              <IncompleteTaskList />
+              <CompletedTaskList />
+            </div>
           </div>
         </div>
       </main>

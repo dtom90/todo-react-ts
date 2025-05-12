@@ -1,7 +1,10 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
 import { useTaskStore } from '../store/useTaskStore';
 
-export default function TaskForm() {
+const TaskForm: React.FC = () => {
+  // Enable whyDidYouRender for this component
+  TaskForm.whyDidYouRender = true;
+
   const addTask = useTaskStore((state) => state.addTask);
   const [taskText, setTaskText] = useState('');
   const [hasError, setHasError] = useState(false);
@@ -41,4 +44,6 @@ export default function TaskForm() {
       </form>
     </div>
   );
-}
+};
+
+export default TaskForm;
