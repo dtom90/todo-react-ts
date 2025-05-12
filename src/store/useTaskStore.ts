@@ -6,6 +6,7 @@ interface TaskStore {
   incompleteTasks: number[];
   completedTasks: number[];
   addTask: (task: Omit<Task, 'id'>) => void;
+  updateTask: (id: number, task: Task) => void;
   toggleTask: (id: number) => void;
   removeTask: (id: number) => void;
 }
@@ -25,6 +26,14 @@ export const useTaskStore = create<TaskStore>((set) => ({
         incompleteTasks: [...state.incompleteTasks, newTask.id], 
         taskMap: state.taskMap.set(newTask.id, newTask) 
       };
+    });
+  },
+  
+  updateTask: (id, task) => {
+    set((state) => {
+      const newTaskMap = new Map(state.taskMap);
+      newTaskMap.set(id, task);
+      return { taskMap: newTaskMap };
     });
   },
   

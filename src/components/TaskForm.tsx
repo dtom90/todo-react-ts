@@ -17,7 +17,7 @@ const TaskForm: React.FC = () => {
     }
     const newTask = {
       id: Date.now(),
-      text: taskText,
+      name: taskText,
       completed: false,
     };
     addTask(newTask);
