@@ -64,6 +64,8 @@ appsettings.Development.json
 # Local development files
 *.db
 *.db-journal
+*.db-wal
+*.db-shm
 
 # Publish output
 publish/

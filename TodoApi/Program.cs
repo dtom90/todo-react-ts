@@ -6,7 +6,20 @@ using TodoApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add CORS policy
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? new[] { "http://localhost:3000" };
+
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddDbContext<TodoContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -29,6 +42,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Use CORS policy
+app.UseCors("AllowReactApp");
 
 app.UseAuthorization();
 

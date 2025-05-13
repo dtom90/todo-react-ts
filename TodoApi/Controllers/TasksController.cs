@@ -50,15 +50,18 @@ public class TasksController : ControllerBase
 
     // PUT: api/Tasks/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutTask(int id, TaskItem task)
+    public async Task<IActionResult> PutTask(int id, TaskItem taskUpdate)
     {
-        if (id != task.Id)
+        var existingTask = await _context.Tasks.FindAsync(id);
+        if (existingTask == null)
         {
-            return BadRequest();
+            return NotFound();
         }
 
-        task.UpdatedAt = DateTime.UtcNow;
-        _context.Entry(task).State = EntityState.Modified;
+        // Update only the properties that should be updated
+        existingTask.Name = taskUpdate.Name ?? existingTask.Name;
+        existingTask.Completed = taskUpdate.Completed ?? existingTask.Completed;
+        existingTask.UpdatedAt = DateTime.UtcNow;
 
         try
         {
@@ -70,10 +73,7 @@ public class TasksController : ControllerBase
             {
                 return NotFound();
             }
-            else
-            {
-                throw;
-            }
+            throw;
         }
 
         return NoContent();
