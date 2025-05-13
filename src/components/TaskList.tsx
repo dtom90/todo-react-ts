@@ -10,8 +10,8 @@ const IncompleteTaskList: React.FC = () => {
   return (
     <div>
       {incompleteTasks.length > 0 && <h3 className="text-xl text-center font-bold my-4">My Tasks</h3>}
-      {incompleteTasks.map((taskId) => (
-        <TaskItem key={taskId} taskId={taskId} />
+      {incompleteTasks.map((task) => (
+        <TaskItem key={task.id} task={task} />
       ))}
     </div>
   );
@@ -26,8 +26,8 @@ const CompletedTaskList: React.FC = () => {
   return (
     <div>
       {completedTasks.length > 0 && <h3 className="text-xl text-center font-bold my-4">Completed Tasks</h3>}
-      {completedTasks.map((taskId) => (
-        <TaskItem key={taskId} taskId={taskId} />
+      {completedTasks.map((task) => (
+        <TaskItem key={task.id} task={task} />
       ))}
     </div>
   );
