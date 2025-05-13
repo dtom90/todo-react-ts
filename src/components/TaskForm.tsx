@@ -3,9 +3,9 @@ import { useTaskStore } from '../store/useTaskStore';
 
 const TaskForm: React.FC = () => {
   // Enable whyDidYouRender for this component
-  TaskForm.whyDidYouRender = true;
+  // TaskForm.whyDidYouRender = true;
 
-  const addTask = useTaskStore((state) => state.addTask);
+  const { addTask } = useTaskStore((state) => state.actions);
   const [taskText, setTaskText] = useState('');
   const [hasError, setHasError] = useState(false);
 

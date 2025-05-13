@@ -3,7 +3,8 @@ import TaskItem from "./TaskItem";
 
 const IncompleteTaskList: React.FC = () => {
   // Enable whyDidYouRender for this component
-  IncompleteTaskList.whyDidYouRender = true;
+  // IncompleteTaskList.whyDidYouRender = true;
+  // console.log("IncompleteTaskList rendered");
 
   const incompleteTasks = useTaskStore((state) => state.incompleteTasks);
   
@@ -19,7 +20,8 @@ const IncompleteTaskList: React.FC = () => {
 
 const CompletedTaskList: React.FC = () => {
   // Enable whyDidYouRender for this component
-  CompletedTaskList.whyDidYouRender = true;
+  // CompletedTaskList.whyDidYouRender = true;
+  // console.log("CompletedTaskList rendered");
 
   const completedTasks = useTaskStore((state) => state.completedTasks);
   

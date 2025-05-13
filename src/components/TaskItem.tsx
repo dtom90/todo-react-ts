@@ -1,19 +1,23 @@
 import { useTaskStore } from "../store/useTaskStore";
 import { useRef, useState } from "react";
 import { Task } from "../types";
+import React from "react";
 
 interface TaskItemProps {
   task: Task;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
-  const { toggleTask, removeTask, updateTask } = useTaskStore();
+// Memoize the component to prevent re-renders when the task is not updated
+const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
+  // It is absolutely imperative that you only hook into the part of the store that you are actually using in this component, 
+  // otherwise any store update will trigger a re-render of this component.
+  const { toggleTask, removeTask, updateTask } = useTaskStore((state) => state.actions);
   const [editMode, setEditMode] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   
   // Enable whyDidYouRender for this component
-  TaskItem.whyDidYouRender = true;
-  console.log(`TaskItem {id: ${task.id}} rendered`);
+  // TaskItem.whyDidYouRender = true;
+  // console.log(`TaskItem {id: ${task.id}} rendered`);
 
   const editName = () => {
     setEditMode(true);
@@ -60,6 +64,6 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
       </button>
     </div>
   );
-};
+})
 
-export default TaskItem;
+export default MemoTaskItem;
