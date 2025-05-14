@@ -1,7 +1,7 @@
-import { useTaskStore } from "../store/useTaskStore";
 import { useRef, useState } from "react";
 import { Task } from "../types";
 import React from "react";
+import { useUpdateTask, useToggleTask, useDeleteTask } from "../hooks/useTasksQuery";
 
 interface TaskItemProps {
   task: Task;
@@ -9,9 +9,10 @@ interface TaskItemProps {
 
 // Memoize the component to prevent re-renders when the task is not updated
 const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
-  // It is absolutely imperative that you only hook into the part of the store that you are actually using in this component, 
-  // otherwise any store update will trigger a re-render of this component.
-  const { updateTask, toggleTask, deleteTask } = useTaskStore((state) => state.actions);
+  const updateTaskMutation = useUpdateTask();
+  const toggleTaskMutation = useToggleTask();
+  const deleteTaskMutation = useDeleteTask();
+  
   const [editMode, setEditMode] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   
@@ -27,7 +28,17 @@ const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
   };
 
   const handleUpdateName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateTask(task.id, { name: e.target.value });
+    updateTaskMutation.mutate({ id: task.id, task: { name: e.target.value } });
+  };
+
+  const handleToggle = () => {
+    toggleTaskMutation.mutate({ id: task.id, completed: !task.completed });
+  };
+
+  const handleDelete = () => {
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      deleteTaskMutation.mutate(task.id);
+    }
   };
 
   return (
@@ -35,8 +46,9 @@ const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
       <input 
         type="checkbox" 
         checked={task.completed} 
-        onChange={() => toggleTask(task.id)}
+        onChange={handleToggle}
         className="cursor-pointer"
+        disabled={toggleTaskMutation.isPending}
       />
       {editMode ? (
         <input
@@ -47,6 +59,7 @@ const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
           onChange={handleUpdateName}
           onBlur={() => setEditMode(false)}
           onKeyDown={(e) => e.key === 'Enter' && setEditMode(false)}
+          disabled={updateTaskMutation.isPending}
         />
       ) : (
         <span 
@@ -58,9 +71,10 @@ const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
       )}
       <button 
         className="ml-2 hover:bg-gray-200 p-1 rounded-lg text-sm" 
-        onClick={() => deleteTask(task.id)}
+        onClick={handleDelete}
+        disabled={deleteTaskMutation.isPending}
       >
-        Remove
+        {deleteTaskMutation.isPending ? 'Removing...' : 'Remove'}
       </button>
     </div>
   );

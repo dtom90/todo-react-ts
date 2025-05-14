@@ -1,4 +1,4 @@
-import { useTaskStore } from "../store/useTaskStore";
+import { useTasks } from "../hooks/useTasksQuery";
 import TaskItem from "./TaskItem";
 
 const IncompleteTaskList: React.FC = () => {
@@ -6,7 +6,12 @@ const IncompleteTaskList: React.FC = () => {
   // IncompleteTaskList.whyDidYouRender = true;
   // console.log("IncompleteTaskList rendered");
 
-  const incompleteTasks = useTaskStore((state) => state.incompleteTasks);
+  const { data: tasks, isLoading, error } = useTasks();
+  
+  if (isLoading) return <div>Loading tasks...</div>;
+  if (error) return <div>Error loading tasks: {error.message}</div>;
+  
+  const incompleteTasks = tasks?.filter(task => !task.completed) ?? [];
   
   return (
     <div>
@@ -23,7 +28,12 @@ const CompletedTaskList: React.FC = () => {
   // CompletedTaskList.whyDidYouRender = true;
   // console.log("CompletedTaskList rendered");
 
-  const completedTasks = useTaskStore((state) => state.completedTasks);
+  const { data: tasks, isLoading, error } = useTasks();
+  
+  if (isLoading) return <div>Loading tasks...</div>;
+  if (error) return <div>Error loading tasks: {error.message}</div>;
+  
+  const completedTasks = tasks?.filter(task => task.completed) ?? [];
   
   return (
     <div>

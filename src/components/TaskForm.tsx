@@ -1,28 +1,31 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
-import { useTaskStore } from '../store/useTaskStore';
+import { useCreateTask } from '../hooks/useTasksQuery';
 
 const TaskForm: React.FC = () => {
   // Enable whyDidYouRender for this component
   // TaskForm.whyDidYouRender = true;
 
-  const { addTask } = useTaskStore((state) => state.actions);
+  const createTaskMutation = useCreateTask();
   const [taskText, setTaskText] = useState('');
   const [hasError, setHasError] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (taskText.trim() === '') {
       setHasError(true);
       return;
     }
-    const newTask = {
-      id: Date.now(),
-      name: taskText,
-      completed: false,
-    };
-    addTask(newTask);
-    setTaskText('');
-    setHasError(false);
+    
+    try {
+      await createTaskMutation.mutateAsync({
+        name: taskText,
+        completed: false,
+      });
+      setTaskText('');
+      setHasError(false);
+    } catch (error) {
+      setHasError(true);
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +41,7 @@ const TaskForm: React.FC = () => {
           placeholder="Add a task" 
           value={taskText} 
           onChange={handleChange} 
+          disabled={createTaskMutation.isPending}
           className={`flex-1 px-3 py-2 border rounded-md transition-colors ${
             hasError 
               ? 'border-red-500 shadow-[0_0_0_2px_rgba(255,68,68,0.1)]' 
@@ -46,9 +50,10 @@ const TaskForm: React.FC = () => {
         />
         <button 
           type="submit"
-          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+          disabled={createTaskMutation.isPending}
+          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors disabled:bg-green-400"
         >
-          Add Task
+          {createTaskMutation.isPending ? 'Adding...' : 'Add Task'}
         </button>
       </form>
     </div>
