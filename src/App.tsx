@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import TaskForm from './components/TaskForm';
 import { IncompleteTaskList, CompletedTaskList } from './components/TaskList';
 import { useTaskStore } from './store/useTaskStore';
-import './App.css';
 
 function App() {
   const { fetchTasks } = useTaskStore(state => state.actions);
@@ -11,17 +10,18 @@ function App() {
     fetchTasks().catch(console.error);
   }, [fetchTasks]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <div className="header-content">
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-[#282c34] py-8 px-4 text-white flex-shrink-0">
+        <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-3xl font-bold mb-6">Todo List</h1>
+          <p className="text-gray-300 text-lg">Stay organized and boost your productivity</p>
         </div>
       </header>
-      <main className="main-content">
-        <div className="todo-container">
-          <div className="todo-wrapper">
+      <main className="flex-grow p-8 bg-gray-100">
+        <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow">
+          <div className="max-w-md mx-auto w-full">
             <TaskForm />
-            <div className="todo-list">
+            <div className="min-h-[400px]">
               <IncompleteTaskList />
               <CompletedTaskList />
             </div>

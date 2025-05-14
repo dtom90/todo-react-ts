@@ -32,15 +32,24 @@ const TaskForm: React.FC = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="flex w-full">
+      <form onSubmit={handleSubmit} className="flex w-full gap-2">
         <input 
           type="text" 
           placeholder="Add a task" 
           value={taskText} 
           onChange={handleChange} 
-          className={`add-task-input ${hasError ? 'error' : ''}`}
+          className={`flex-1 px-3 py-2 border rounded-md transition-colors ${
+            hasError 
+              ? 'border-red-500 shadow-[0_0_0_2px_rgba(255,68,68,0.1)]' 
+              : 'border-gray-300 hover:border-gray-400 focus:border-blue-500 focus:outline-none'
+          }`}
         />
-        <button className="add-task-btn" type="submit">Add Task</button>
+        <button 
+          type="submit"
+          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+        >
+          Add Task
+        </button>
       </form>
     </div>
   );
