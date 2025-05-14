@@ -1,4 +1,4 @@
-import { FormEvent, ChangeEvent, useState } from 'react';
+import { FormEvent, ChangeEvent, useState, useRef } from 'react';
 import { useCreateTask } from '../hooks/useTasksQuery';
 
 const TaskForm: React.FC = () => {
@@ -8,7 +8,7 @@ const TaskForm: React.FC = () => {
   const createTaskMutation = useCreateTask();
   const [taskText, setTaskText] = useState('');
   const [hasError, setHasError] = useState(false);
-
+  const inputRef = useRef<HTMLInputElement>(null);
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (taskText.trim() === '') {
@@ -23,6 +23,9 @@ const TaskForm: React.FC = () => {
       });
       setTaskText('');
       setHasError(false);
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
     } catch (error) {
       setHasError(true);
     }
@@ -36,9 +39,10 @@ const TaskForm: React.FC = () => {
   return (
     <div>
       <form onSubmit={handleSubmit} className="flex w-full gap-2">
-        <input 
+        <input
           type="text" 
           placeholder="Add a task" 
+          ref={inputRef}
           value={taskText} 
           onChange={handleChange} 
           disabled={createTaskMutation.isPending}

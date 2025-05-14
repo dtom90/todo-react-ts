@@ -14,6 +14,7 @@ const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
   const deleteTaskMutation = useDeleteTask();
   
   const [editMode, setEditMode] = useState(false);
+  const [inputName, setInputName] = useState(task.name);
   const inputRef = useRef<HTMLInputElement>(null);
   
   // Enable whyDidYouRender for this component
@@ -21,14 +22,16 @@ const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
   // console.log(`TaskItem {id: ${task.id}} rendered`);
 
   const editName = () => {
+    setInputName(task.name);
     setEditMode(true);
     setTimeout(() => {
       inputRef.current?.focus();
     }, 0);
   };
 
-  const handleUpdateName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateTaskMutation.mutate({ id: task.id, task: { name: e.target.value } });
+  const handleUpdateName = () => {
+    updateTaskMutation.mutate({ id: task.id, task: { name: inputName } });
+    setEditMode(false)
   };
 
   const handleToggle = () => {
@@ -54,11 +57,11 @@ const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
         <input
           className="ml-4 flex-grow border border-gray-300 rounded px-2 py-1"
           type="text"
-          value={task.name}
+          value={inputName}
           ref={inputRef}
-          onChange={handleUpdateName}
-          onBlur={() => setEditMode(false)}
-          onKeyDown={(e) => e.key === 'Enter' && setEditMode(false)}
+          onChange={(e) => setInputName(e.target.value)}
+          onBlur={handleUpdateName}
+          onKeyUp={(e) => e.key === 'Enter' && handleUpdateName()}
           disabled={updateTaskMutation.isPending}
         />
       ) : (
