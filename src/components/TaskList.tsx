@@ -2,8 +2,6 @@ import { useTasks } from "../hooks/useTasksQuery";
 import TaskItem from "./TaskItem";
 
 const IncompleteTaskList: React.FC = () => {
-  // Enable whyDidYouRender for this component
-  // IncompleteTaskList.whyDidYouRender = true;
   // console.log("IncompleteTaskList rendered");
 
   const { data: tasks, isLoading, error } = useTasks();
@@ -24,8 +22,6 @@ const IncompleteTaskList: React.FC = () => {
 };
 
 const CompletedTaskList: React.FC = () => {
-  // Enable whyDidYouRender for this component
-  // CompletedTaskList.whyDidYouRender = true;
   // console.log("CompletedTaskList rendered");
 
   const { data: tasks, isLoading, error } = useTasks();

@@ -2,8 +2,6 @@ import { FormEvent, ChangeEvent, useState, useRef } from 'react';
 import { useCreateTask } from '../hooks/useTasksQuery';
 
 const TaskForm: React.FC = () => {
-  // Enable whyDidYouRender for this component
-  // TaskForm.whyDidYouRender = true;
 
   const createTaskMutation = useCreateTask();
   const [taskText, setTaskText] = useState('');

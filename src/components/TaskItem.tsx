@@ -16,9 +16,7 @@ const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
   const [editMode, setEditMode] = useState(false);
   const [inputName, setInputName] = useState(task.name);
   const inputRef = useRef<HTMLInputElement>(null);
-  
-  // Enable whyDidYouRender for this component
-  // TaskItem.whyDidYouRender = true;
+
   // console.log(`TaskItem {id: ${task.id}} rendered`);
 
   const editName = () => {
