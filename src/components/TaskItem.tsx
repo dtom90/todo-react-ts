@@ -11,7 +11,7 @@ interface TaskItemProps {
 const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
   // It is absolutely imperative that you only hook into the part of the store that you are actually using in this component, 
   // otherwise any store update will trigger a re-render of this component.
-  const { toggleTask, removeTask, updateTask } = useTaskStore((state) => state.actions);
+  const { updateTask, toggleTask, deleteTask } = useTaskStore((state) => state.actions);
   const [editMode, setEditMode] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   
@@ -58,7 +58,7 @@ const MemoTaskItem: React.FC<TaskItemProps> = React.memo(({ task }) => {
       )}
       <button 
         className="ml-2 hover:bg-gray-200 p-1 rounded-lg text-sm" 
-        onClick={() => removeTask(task.id)}
+        onClick={() => deleteTask(task.id)}
       >
         Remove
       </button>

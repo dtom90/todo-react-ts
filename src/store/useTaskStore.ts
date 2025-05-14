@@ -16,7 +16,7 @@ type TaskStore = {
     addTask: (task: { name: string; description?: string }) => Promise<Task>;
     updateTask: (id: number, updates: Partial<Omit<Task, 'id'>>) => Promise<void>;
     toggleTask: (id: number) => Promise<void>;
-    removeTask: (id: number) => Promise<void>;
+    deleteTask: (id: number) => Promise<void>;
     setError: (error: string | null) => void;
   };
 };
@@ -154,7 +154,10 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       await updateTask(id, { completed: !task?.completed });
     },
     
-    removeTask: async (id: number) => {
+    deleteTask: async (id: number) => {
+      if (!confirm('Are you sure you want to delete this task?')) {
+        return;
+      }
       set({ isLoading: true, error: null });
       try {
         await apiClient.deleteTask(id);
