@@ -1,5 +1,14 @@
 # Getting Started with Create React App
 
+## Supabase Environment Variables
+
+Create a `.env` file in your project root with the following:
+
+```
+VITE_SUPABASE_URL=<supabase_url>
+VITE_SUPABASE_ANON_KEY=<supabase_anon_key>
+```
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
