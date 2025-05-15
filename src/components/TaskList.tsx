@@ -1,44 +1,36 @@
 import { useTasks } from "../hooks/useTasksQuery";
 import TaskItem from "./TaskItem";
+import { Task } from "../types";
 
-const IncompleteTaskList: React.FC = () => {
-  // console.log("IncompleteTaskList rendered");
+interface TaskListProps {
+  title: string;
+  filterCondition: (task: Task) => boolean;
+}
 
+const TaskList: React.FC<TaskListProps> = ({ title, filterCondition }) => {
   const { data: tasks, isLoading, error } = useTasks();
   
   if (isLoading) return <div>Loading tasks...</div>;
   if (error) return <div>Error loading tasks: {error.message}</div>;
   
-  const incompleteTasks = tasks?.filter(task => !task.completed) ?? [];
+  const filteredTasks = tasks?.filter(filterCondition) ?? [];
   
   return (
     <div>
-      {incompleteTasks.length > 0 && <h3 className="text-xl text-center font-bold my-4">My Tasks</h3>}
-      {incompleteTasks.map((task) => (
+      {filteredTasks.length > 0 && <h3 className="text-xl text-center font-bold my-4">{title}</h3>}
+      {filteredTasks.map((task) => (
         <TaskItem key={task.id} task={task} />
       ))}
     </div>
   );
 };
 
-const CompletedTaskList: React.FC = () => {
-  // console.log("CompletedTaskList rendered");
+const IncompleteTaskList: React.FC = () => {
+  return <TaskList title="My Tasks" filterCondition={(task) => !task.completed} />;
+};
 
-  const { data: tasks, isLoading, error } = useTasks();
-  
-  if (isLoading) return <div>Loading tasks...</div>;
-  if (error) return <div>Error loading tasks: {error.message}</div>;
-  
-  const completedTasks = tasks?.filter(task => task.completed) ?? [];
-  
-  return (
-    <div>
-      {completedTasks.length > 0 && <h3 className="text-xl text-center font-bold my-4">Completed Tasks</h3>}
-      {completedTasks.map((task) => (
-        <TaskItem key={task.id} task={task} />
-      ))}
-    </div>
-  );
+const CompletedTaskList: React.FC = () => {
+  return <TaskList title="Completed Tasks" filterCondition={(task) => task.completed} />;
 };
 
 export { IncompleteTaskList, CompletedTaskList };
