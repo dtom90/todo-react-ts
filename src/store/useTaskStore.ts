@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { Task } from '../types';
-import * as apiClient from './apiClient';
+import * as apiClient from '../hooks/apiClient';
 
 // Combined store type
 type TaskStore = {

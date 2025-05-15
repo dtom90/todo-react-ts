@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import * as apiClient from '../store/apiClient';
+import * as apiClient from './apiClient';
 import { Task } from '../types';
 
 // Query keys

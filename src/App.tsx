@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import TaskForm from './components/TaskForm';
 import { IncompleteTaskList, CompletedTaskList } from './components/TaskList';
 import { useTaskStore } from './store/useTaskStore';
+import TaskFilter from './components/TaskFilter';
 
 function App() {
   const { fetchTasks } = useTaskStore(state => state.actions);
@@ -21,6 +22,8 @@ function App() {
         <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow">
           <div className="max-w-md mx-auto w-full">
             <TaskForm />
+            <hr className="my-8" />
+            <TaskFilter />
             <div className="min-h-[400px]">
               <IncompleteTaskList />
               <CompletedTaskList />
