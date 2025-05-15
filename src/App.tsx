@@ -37,12 +37,8 @@ function Header({ onSignIn }: { onSignIn: () => void }) {
 }
 
 function App() {
-  const { fetchTasks } = useTaskStore((state) => state.actions);
   const [authOpen, setAuthOpen] = useState(false);
 
-  useEffect(() => {
-    fetchTasks().catch(console.error);
-  }, [fetchTasks]);
   return (
     <SessionContextProvider supabaseClient={supabase}>
       <div className="min-h-screen flex flex-col">
