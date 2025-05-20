@@ -1,8 +1,8 @@
 import React from 'react';
-import { useClientStore } from '../hooks/useClientStore';
+import { useFilter } from '../hooks/useFilter';
 
 const TaskFilter: React.FC = () => {
-  const { filter, setFilter } = useClientStore();
+  const { filter, setFilter } = useFilter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;

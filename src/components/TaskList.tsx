@@ -1,6 +1,6 @@
 import { Task } from "../types";
 import { useTasks } from "../hooks/useTasksQuery";
-import { useClientStore } from "../hooks/useClientStore";
+import { useFilter } from "../hooks/useFilter";
 import TaskItem from "./TaskItem";
 
 interface TaskListProps {
@@ -10,7 +10,7 @@ interface TaskListProps {
 
 const TaskList: React.FC<TaskListProps> = ({ title, typeCondition }) => {
   const { data: tasks, isLoading, error } = useTasks();
-  const { filter } = useClientStore();
+  const { filter } = useFilter();
   
   if (isLoading) return <div>Loading tasks...</div>;
   if (error) return <div>Error loading tasks: {error.message}</div>;

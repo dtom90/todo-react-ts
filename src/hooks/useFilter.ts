@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 
-interface ClientStore {
+interface FilterStore {
   filter: string
   setFilter: (filter: string) => void
 }
 
-export const useClientStore = create<ClientStore>((set) => ({
+export const useFilter = create<FilterStore>((set) => ({
   filter: '',
   setFilter: (filter: string) => set({ filter }),
 }))

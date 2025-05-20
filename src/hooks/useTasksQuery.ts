@@ -46,9 +46,17 @@ export const useUpdateTask = () => {
   return useMutation({
     mutationFn: ({ id, task }: { id: number; task: Partial<Task> }) =>
       supabaseTasksClient.updateTask(id, task),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: taskKeys.detail(id) });
+    onSuccess: (updatedTask: Task) => {
+      // Update the task in the lists query
+      queryClient.setQueryData(taskKeys.lists(), (oldData: Task[] | undefined) => {
+        if (!oldData) return oldData;
+        return oldData.map(task => 
+          task.id === updatedTask.id ? updatedTask : task
+        );
+      });
+      
+      // Update the task in the detail query
+      queryClient.setQueryData(taskKeys.detail(updatedTask.id), updatedTask);
     },
   });
 };
@@ -72,9 +80,17 @@ export const useToggleTask = () => {
   return useMutation({
     mutationFn: ({ id, completed }: { id: number; completed: boolean }) =>
       supabaseTasksClient.toggleTaskCompletion(id, completed),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: taskKeys.detail(id) });
+    onSuccess: (updatedTask: Task) => {
+      // Update the task in the lists query
+      queryClient.setQueryData(taskKeys.lists(), (oldData: Task[] | undefined) => {
+        if (!oldData) return oldData;
+        return oldData.map(task => 
+          task.id === updatedTask.id ? updatedTask : task
+        );
+      });
+      
+      // Update the task in the detail query
+      queryClient.setQueryData(taskKeys.detail(updatedTask.id), updatedTask);
     },
   });
 };

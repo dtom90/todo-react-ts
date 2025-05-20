@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import TaskForm from './components/TaskForm';
 import { IncompleteTaskList, CompletedTaskList } from './components/TaskList';
-import { useTaskStore } from './store/useTaskStore';
 import TaskFilter from './components/TaskFilter';
 import { SessionContextProvider, useUser } from '@supabase/auth-helpers-react';
 import { supabase } from './supabaseClient';
@@ -9,6 +8,15 @@ import AuthModal from './components/AuthModal';
 
 function Header({ onSignIn }: { onSignIn: () => void }) {
   const user = useUser();
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut(); // TODO: seems like this returns error, rather than throws?
+    } catch (error) {
+      console.error('Error signing out:', error);
+      // You might want to show an error message to the user here
+    }
+  };
 
   return (
     <div className="max-w-3xl mx-auto text-center relative">
@@ -19,7 +27,7 @@ function Header({ onSignIn }: { onSignIn: () => void }) {
           <span className="bg-white text-[#282c34] px-3 py-1 rounded shadow text-sm">{user.email}</span>
           <button
             className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm"
-            onClick={async () => { await supabase.auth.signOut(); }}
+            onClick={handleSignOut}
           >
             Sign Out
           </button>

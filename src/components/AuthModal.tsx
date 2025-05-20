@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { supabase } from '../supabaseClient';
 
 interface AuthModalProps {
@@ -10,7 +9,13 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
   if (!open) return null;
 
   const handleOAuthLogin = async (provider: 'google' | 'github') => {
-    await supabase.auth.signInWithOAuth({ provider });
+    const { data, error } = await supabase.auth.signInWithOAuth({ provider });
+    if (error) {
+      console.error('Error signing in with OAuth:', error);
+      // TODO: show error message to user
+    } else {
+      window.location.href = data.url;
+    }
   };
 
   return (
@@ -33,4 +38,4 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
       </div>
     </div>
   );
-} 
+}

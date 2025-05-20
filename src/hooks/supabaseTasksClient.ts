@@ -36,12 +36,15 @@ export const createTask = async (task: Omit<Task, 'id' | 'created_at' | 'updated
 };
 
 // Update an existing task (if owned by the user)
-export const updateTask = async (id: number, updates: Partial<Omit<Task, 'id' | 'user_id'>>): Promise<void> => {
-  const { error } = await supabase
+export const updateTask = async (id: number, updates: Partial<Omit<Task, 'id' | 'user_id'>>): Promise<Task> => {
+  const { data, error } = await supabase
     .from('task')
     .update(updates)
-    .eq('id', id);
+    .eq('id', id)
+    .select()
+    .single();
   if (error) throw new Error(error.message);
+  return data;
 };
 
 // Delete a task (if owned by the user)
@@ -54,6 +57,6 @@ export const deleteTask = async (id: number): Promise<void> => {
 };
 
 // Toggle task completion
-export const toggleTaskCompletion = async (id: number, completed: boolean): Promise<void> => {
-  await updateTask(id, { completed });
+export const toggleTaskCompletion = async (id: number, completed: boolean): Promise<Task> => {
+  return await updateTask(id, { completed });
 };
