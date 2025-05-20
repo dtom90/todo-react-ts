@@ -8,6 +8,14 @@ interface TaskListProps {
   typeCondition: (task: Task) => boolean;
 }
 
+const IncompleteTaskList: React.FC = () => {
+  return <TaskList title="My Tasks" typeCondition={(task) => !task.completed} />;
+};
+
+const CompletedTaskList: React.FC = () => {
+  return <TaskList title="Completed Tasks" typeCondition={(task) => task.completed} />;
+};
+
 const TaskList: React.FC<TaskListProps> = ({ title, typeCondition }) => {
   const { data: tasks, isLoading, error } = useTasks();
   const { filter } = useFilter();
@@ -25,14 +33,6 @@ const TaskList: React.FC<TaskListProps> = ({ title, typeCondition }) => {
       ))}
     </div>
   );
-};
-
-const IncompleteTaskList: React.FC = () => {
-  return <TaskList title="My Tasks" typeCondition={(task) => !task.completed} />;
-};
-
-const CompletedTaskList: React.FC = () => {
-  return <TaskList title="Completed Tasks" typeCondition={(task) => task.completed} />;
 };
 
 export { IncompleteTaskList, CompletedTaskList };
