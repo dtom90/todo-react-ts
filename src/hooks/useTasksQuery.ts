@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import * as supabaseTasksClient from './supabaseTasksClient';
+import * as supabaseApiClient from './supabaseApiClient';
 import { Task } from '../types';
 
 // Query keys
@@ -13,7 +13,7 @@ export const taskKeys = {
 export const useTasks = () => {
   return useQuery({
     queryKey: taskKeys.lists(),
-    queryFn: supabaseTasksClient.getTasks,
+    queryFn: supabaseApiClient.getTasks,
   });
 };
 
@@ -21,7 +21,7 @@ export const useTasks = () => {
 export const useTask = (id: number) => {
   return useQuery({
     queryKey: taskKeys.detail(id),
-    queryFn: () => supabaseTasksClient.getTask(id),
+    queryFn: () => supabaseApiClient.getTask(id),
     enabled: !!id,
   });
 };
@@ -32,7 +32,7 @@ export const useCreateTask = () => {
   
   return useMutation({
     mutationFn: (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => 
-      supabaseTasksClient.createTask(task),
+      supabaseApiClient.createTask(task),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
     },
@@ -45,7 +45,7 @@ export const useUpdateTask = () => {
   
   return useMutation({
     mutationFn: ({ id, task }: { id: number; task: Partial<Task> }) =>
-      supabaseTasksClient.updateTask(id, task),
+      supabaseApiClient.updateTask(id, task),
     onSuccess: (updatedTask: Task) => {
       // Update the task in the lists query
       queryClient.setQueryData(taskKeys.lists(), (oldData: Task[] | undefined) => {
@@ -66,7 +66,7 @@ export const useDeleteTask = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (id: number) => supabaseTasksClient.deleteTask(id),
+    mutationFn: (id: number) => supabaseApiClient.deleteTask(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
     },
@@ -79,7 +79,7 @@ export const useToggleTask = () => {
   
   return useMutation({
     mutationFn: ({ id, completed }: { id: number; completed: boolean }) =>
-      supabaseTasksClient.toggleTaskCompletion(id, completed),
+      supabaseApiClient.toggleTaskCompletion(id, completed),
     onSuccess: (updatedTask: Task) => {
       // Update the task in the lists query
       queryClient.setQueryData(taskKeys.lists(), (oldData: Task[] | undefined) => {

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { Task } from '../types';
-import * as apiClient from '../hooks/apiClient';
+import * as dotnetApiClient from '../hooks/dotnetApiClient';
 
 // Combined store type
 type TaskStore = {
@@ -50,7 +50,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     fetchTasks: async () => {
       set({ isLoading: true, error: null });
       try {
-        const tasks = await apiClient.getTasks();
+        const tasks = await dotnetApiClient.getTasks();
         // Map API TaskItem to our Task type
         const mappedTasks: Task[] = tasks.map(task => ({
           id: task.id,
@@ -74,7 +74,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     addTask: async (task) => {
       set({ isLoading: true, error: null });
       try {
-        const newTask = await apiClient.createTask({
+        const newTask = await dotnetApiClient.createTask({
           name: task.name,
           completed: false
         });
@@ -104,7 +104,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     updateTask: async (id, updates) => {
       set({ isLoading: true, error: null });
       try {
-        await apiClient.updateTask(id, {
+        await dotnetApiClient.updateTask(id, {
           name: updates.name,
           completed: updates.completed
         });
@@ -160,7 +160,7 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       }
       set({ isLoading: true, error: null });
       try {
-        await apiClient.deleteTask(id);
+        await dotnetApiClient.deleteTask(id);
         
         set(state => ({
           incompleteTasks: state.incompleteTasks.filter(t => t.id !== id),
